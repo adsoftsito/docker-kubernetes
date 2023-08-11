@@ -1,0 +1,36 @@
+#manifest
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nifi-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nifi-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nifi-server
+    spec:
+      containers:
+      - name: nifi-container
+        image: apache/nifi
+        #imagePullPolicy: Never
+        #image: docker.io/{docker_user}/tensorflow-{model_name}:{github.sha}
+        ports:
+        - containerPort: 8443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: nifi-service
+  name: nifi-service
+spec:
+  ports:
+  - port: 8443
+    targetPort: 8443
+  selector:
+    app: nifi-server
+  type: LoadBalancer
