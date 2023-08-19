@@ -1,0 +1,6 @@
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace nifi-adsoftsito -l "app.kubernetes.io/name=node-red,app.kubernetes.io/instance=my-nodered" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace nifi-adsoftsito $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:1880 to use your application"
+  kubectl --namespace nifi-adsoftsito port-forward $POD_NAME 8080:$CONTAINER_PORT
+
